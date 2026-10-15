@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESP32 Firmware Flasher</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <!-- Header -->
+      <header>
+        <div>
+          <span class="eyebrow">WEB SERIAL UTILITY</span>
+          <h1>ESP32 Firmware Flasher</h1>
+          <p>Flash ESP-IDF and Arduino-ESP32 firmware from your browser.</p>
+        </div>
+
+        <div class="header-info">
+          <span id="appVersion" class="version">v1.0.0</span>
+          <span id="status" class="status" role="status"> Disconnected </span>
+        </div>
+      </header>
+
+      <!-- 1. Device Connection -->
+      <section class="panel">
+        <h2>1. Device Connection</h2>
+
+        <div class="connection">
+          <label for="baudRate">Baud Rate</label>
+          <select id="baudRate">
+            <option value="9600">9600</option>
+            <option value="57600">57600</option>
+            <option value="74880">74880</option>
+            <option value="115200" selected>115200</option>
+            <option value="230400">230400</option>
+            <option value="460800">460800</option>
+            <option value="921600">921600</option>
+            <option value="1500000">1500000</option>
+            <option value="2000000">2000000</option>
+          </select>
+        </div>
+
+        <div class="file-group">
+          <label>Device Status</label>
+          <div id="chipInfo" class="device">Not Connected</div>
+        </div>
+
+        <div class="button-group actions">
+          <button id="connect">Connect</button>
+          <button id="disconnect" class="secondary" disabled>Disconnect</button>
+        </div>
+      </section>
+
+      <!-- 2. Firmware Files -->
+      <section class="panel">
+        <h2>2. Firmware Files</h2>
+        <p class="hint">
+          ESP-IDF / Arduino-ESP32: inspect each binary automatically. Use
+          embedded offsets where available, otherwise fall back to defaults.
+        </p>
+
+        <div class="file-group file-row">
+          <label for="bootloader">Bootloader</label>
+          <input type="file" id="bootloader" accept=".bin" />
+          <label for="bootloaderAddr" class="sr-only">Bootloader Offset</label>
+          <input
+            type="text"
+            id="bootloaderAddr"
+            value="0x1000"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="file-group file-row">
+          <label for="partitions">Partitions</label>
+          <input type="file" id="partitions" accept=".bin" />
+          <label for="partitionsAddr" class="sr-only">Partition Offset</label>
+          <input
+            type="text"
+            id="partitionsAddr"
+            value="0x8000"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="file-group file-row">
+          <label for="firmware">Firmware</label>
+          <input type="file" id="firmware" accept=".bin" />
+          <label for="firmwareAddr" class="sr-only">Firmware Offset</label>
+          <input
+            type="text"
+            id="firmwareAddr"
+            value="0x10000"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="file-group file-row">
+          <label for="merged">Merged Full Flash</label>
+          <input type="file" id="merged" accept=".bin" />
+          <span class="hint">Base offset: 0x0000</span>
+        </div>
+
+        <pre id="binaryInfo" class="hint">
+ Select .bin images for automatic inspection. </pre
+        >
+
+        <details>
+          <summary>Flash Layout / Partition Table</summary>
+          <pre id="partitionView" class="hint">No partition table uploaded</pre>
+        </details>
+
+        <div class="flash-options">
+          <label class="check" for="smartFlash">
+            <input type="checkbox" id="smartFlash" />
+            Smart Flash (skip identical data)
+          </label>
+
+          <label class="check" for="verifyFlash">
+            <input type="checkbox" id="verifyFlash" checked />
+            Verify flash after writing
+          </label>
+
+          <label class="check" for="resetAfter">
+            <input type="checkbox" id="resetAfter" checked />
+            Reset device after flashing
+          </label>
+        </div>
+
+        <div class="button-group actions">
+          <button id="flash" class="success" disabled>Flash Firmware</button>
+          <button id="erase" class="danger" disabled>Erase Entire Flash</button>
+        </div>
+      </section>
+
+      <!-- 3. Device Tools & Backup -->
+      <section class="panel">
+        <h2>3. Device Tools &amp; Backup</h2>
+
+        <div class="file-group">
+          <label for="backupAddr">Backup Start Offset</label>
+          <input type="text" id="backupAddr" value="0x0" spellcheck="false" />
+        </div>
+
+        <div class="file-group">
+          <label for="backupSize">Backup Size (bytes or hex)</label>
+          <input
+            type="text"
+            id="backupSize"
+            value="0x400000"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="button-group actions">
+          <button id="backup" disabled>Backup Region (.bin)</button>
+          <button id="inspectDevice" class="secondary" disabled>
+            Read Device Partitions
+          </button>
+        </div>
+
+        <p class="hint">
+          Backup defaults to 4 MiB. Backups can contain credentials or NVS data.
+          Flash encryption may limit reading.
+        </p>
+      </section>
+
+      <!-- 4. Serial Monitor -->
+      <section class="panel">
+        <h2>4. Serial Monitor</h2>
+
+        <div class="file-group">
+          <label for="monitorBaud">Monitor Baud Rate</label>
+          <select id="monitorBaud">
+            <option value="115200" selected>115200</option>
+            <option value="74880">74880</option>
+            <option value="230400">230400</option>
+            <option value="460800">460800</option>
+          </select>
+        </div>
+
+        <p class="hint">
+          Starting the monitor ends the flashing session. Reconnect before
+          flashing again.
+        </p>
+
+        <div class="button-group actions">
+          <button id="startMonitor" disabled>Start Monitor</button>
+          <button id="stopMonitor" class="secondary" disabled>
+            Stop Monitor
+          </button>
+        </div>
+      </section>
+
+      <!-- 5. Factory Multi-device -->
+      <section class="panel">
+        <h2>5. Factory Multi-device</h2>
+        <p class="hint">
+          Add USB devices one by one. Each station detects its MCU
+          independently. All stations use the selected firmware. Avoid using the
+          normal device connection while running factory flashing.
+        </p>
+
+        <div class="button-group actions">
+          <button id="addFactory" class="secondary">Add USB Device</button>
+          <button id="clearFactory" class="ghost">Clear Devices</button>
+          <button id="runFactory" class="success" disabled>
+            Flash All Devices
+          </button>
+          <button id="factoryExport" class="secondary">
+            Export Factory Report
+          </button>
+          <button id="eraseFactory" class="danger" disabled>
+            Erase All Devices
+          </button>
+        </div>
+
+        <div class="table-scroll">
+          <table class="factory-table">
+            <thead>
+              <tr>
+                <th>Station</th>
+                <th>Serial Port</th>
+                <th>Detected Chip</th>
+                <th>Status</th>
+                <th>Progress</th>
+              </tr>
+            </thead>
+            <tbody id="factoryDevices"></tbody>
+          </table>
+        </div>
+
+        <p id="factorySummary" class="hint">0 devices</p>
+      </section>
+
+      <!-- 6. Flash History -->
+      <section class="panel">
+        <div class="section-head">
+          <h2>6. Flash History</h2>
+
+          <div class="button-group actions">
+            <button id="exportReport" class="secondary">
+              Export Report JSON
+            </button>
+            <button id="clearHistory" class="ghost">Clear History</button>
+          </div>
+        </div>
+
+        <pre id="history" class="hint">No history</pre>
+      </section>
+
+      <!-- 7. Operation Log -->
+      <section class="panel">
+        <div class="section-head">
+          <h2>7. Operation Log</h2>
+          <button id="clearLog" class="ghost">Clear Log</button>
+        </div>
+
+        <div class="file-group">
+          <progress id="progressBar" value="0" max="100"></progress>
+          <span id="progressText">0%</span>
+        </div>
+
+        <div id="operation" class="hint">Ready</div>
+        <textarea id="log" readonly aria-label="Operation Log"></textarea>
+      </section>
+
+      <footer>
+        Requires a browser with Web Serial support and HTTPS or localhost.
+        Firmware files are processed in your browser.
+      </footer>
+    </main>
+
+    <script type="module" src="flash.js"></script>
+  </body>
+</html>

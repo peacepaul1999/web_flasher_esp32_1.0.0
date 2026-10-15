@@ -1,0 +1,731 @@
+/* style.css */
+
+/* ============================================================
+   1. GLOBAL
+   ============================================================ */
+
+:root {
+  font-family: "Segoe UI", sans-serif;
+
+  color-scheme: dark;
+
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-input: #334155;
+  --bg-console: #020617;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+
+  --border-color: #334155;
+
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+
+  --color-success: #16a34a;
+  --color-success-hover: #15803d;
+
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+
+  --color-secondary: #475569;
+  --color-secondary-hover: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+
+  font-family: "Segoe UI", sans-serif;
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 2rem;
+
+  background: var(--bg-secondary);
+
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================================
+   2. HEADERS AND PANELS
+   ============================================================ */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  margin: 0.4rem 0 0.6rem;
+
+  color: #60a5fa;
+  font-size: 2rem;
+}
+
+h2 {
+  margin: 0 0 1rem;
+
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+.eyebrow {
+  color: #60a5fa;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Application Version */
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.version {
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+
+    background: var(--bg-input);
+    color: var(--text-secondary);
+
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Connection Status */
+
+.status {
+  padding: 0.55rem 0.8rem;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--bg-input);
+  color: var(--text-secondary);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status.connected {
+  background: #14532d;
+  border-color: #166534;
+  color: #86efac;
+}
+
+.status.busy {
+  background: #1e3a8a;
+  border-color: #1d4ed8;
+  color: #bfdbfe;
+}
+
+.panel {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  background: #172033;
+}
+
+.hint {
+  color: var(--text-secondary);
+
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   3. FORM CONTROLS
+   ============================================================ */
+
+.file-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+
+  margin-bottom: 0.4rem;
+
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+input[type="file"],
+input[type="text"],
+input:not([type]),
+select {
+  display: block;
+
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--bg-input);
+  color: var(--text-primary);
+
+  font-family: inherit;
+  font-size: 14px;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 0.8rem;
+  padding: 0.45rem 0.7rem;
+
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+
+  background: var(--color-secondary);
+  color: var(--text-primary);
+
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: var(--color-secondary-hover);
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgba(96, 165, 250, 0.5);
+  outline-offset: 2px;
+}
+
+.connection {
+  margin-bottom: 1rem;
+}
+
+.file-row {
+  display: grid;
+
+  grid-template-columns: 120px minmax(0, 1fr) 140px;
+
+  align-items: center;
+
+  gap: 1rem;
+  padding: 0.75rem 0;
+
+  margin-bottom: 0;
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+.file-row > label:not(.sr-only),
+.file-row > input,
+.file-row > .hint {
+  margin-bottom: 0;
+}
+
+.flash-options {
+  margin: 1rem 0;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+
+  font-weight: 500;
+}
+
+.check input {
+  width: auto;
+  margin: 0;
+
+  accent-color: var(--color-primary);
+}
+
+#chipInfo,
+.device {
+  min-height: 60px;
+  padding: 12px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--bg-input);
+  color: var(--text-primary);
+
+  font-family: Consolas, monospace;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   4. BUTTONS
+   ============================================================ */
+
+.button-group,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.button-group button {
+  flex: 1 1 auto;
+}
+
+button {
+  padding: 0.9rem;
+
+  border: none;
+  border-radius: 10px;
+
+  background: var(--color-primary);
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: var(--color-primary-hover);
+}
+
+/* Connect */
+
+#connect {
+  background: var(--color-primary);
+}
+
+#connect:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+/* Disconnect */
+
+#disconnect,
+button.secondary {
+  background: var(--color-secondary);
+}
+
+#disconnect:hover:not(:disabled),
+button.secondary:hover:not(:disabled) {
+  background: var(--color-secondary-hover);
+}
+
+/* Flash */
+
+#flash,
+button.success {
+  background: var(--color-success);
+}
+
+#flash:hover:not(:disabled),
+button.success:hover:not(:disabled) {
+  background: var(--color-success-hover);
+}
+
+/* Erase */
+
+#erase,
+button.danger {
+  background: var(--color-danger);
+}
+
+#erase:hover:not(:disabled),
+button.danger:hover:not(:disabled) {
+  background: var(--color-danger-hover);
+}
+
+/* Ghost Button */
+
+button.ghost {
+  border: 1px solid var(--border-color);
+
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+button.ghost:hover:not(:disabled) {
+  background: var(--color-secondary);
+}
+
+/* Disabled Button */
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   5. PROGRESS AND LOG
+   ============================================================ */
+
+progress {
+  width: 100%;
+  height: 24px;
+
+  margin-top: 5px;
+
+  accent-color: var(--color-primary);
+}
+
+progress::-webkit-progress-bar {
+  background-color: var(--bg-input);
+  border-radius: 8px;
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--color-primary);
+  border-radius: 8px;
+}
+
+progress::-moz-progress-bar {
+  background-color: var(--color-primary);
+  border-radius: 8px;
+}
+
+#progressText {
+  display: inline-block;
+
+  margin-top: 0.35rem;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Console Log */
+
+#log {
+  display: block;
+
+  width: 100%;
+  height: 250px;
+
+  margin-top: 1rem;
+  padding: 1rem;
+
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  background: var(--bg-console);
+  color: #4ade80;
+
+  resize: vertical;
+
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#operation {
+  margin-top: 0.7rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   6. PARTITION TABLE, HISTORY AND FACTORY
+   ============================================================ */
+
+details {
+  padding: 1rem;
+  margin: 1rem 0;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--bg-input);
+}
+
+summary {
+  color: var(--text-primary);
+
+  cursor: pointer;
+  font-weight: 600;
+}
+
+pre {
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+
+  white-space: pre-wrap;
+
+  font-family: Consolas, monospace;
+}
+
+#binaryInfo,
+#partitionView,
+#history {
+  padding: 0.75rem;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--bg-input);
+  color: var(--text-primary);
+
+  line-height: 1.6;
+}
+
+/* Factory Table */
+
+.table-scroll {
+  max-width: 100%;
+
+  margin: 1rem 0;
+
+  overflow-x: auto;
+}
+
+.factory-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 0.9rem;
+}
+
+.factory-table th,
+.factory-table td {
+  padding: 0.8rem;
+
+  border-bottom: 1px solid var(--border-color);
+
+  text-align: left;
+  vertical-align: top;
+}
+
+.factory-table th {
+  background: var(--bg-input);
+  color: var(--text-primary);
+
+  font-weight: 700;
+}
+
+.factory-table td {
+  color: var(--text-secondary);
+}
+
+.factory-table tbody tr:hover {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+/* FACTORY STATUS COLORS */
+
+.factory-status {
+  display: inline-block;
+
+  padding: 0.35rem 0.7rem;
+
+  border-radius: 6px;
+
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* PASS */
+
+.factory-status.status-pass {
+  background: #14532d;
+  color: #86efac;
+}
+
+/* FAIL */
+
+.factory-status.status-fail {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* NO SUPPORT */
+
+.factory-status.status-unsupported {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+/* FLASHING / ERASING / VERIFYING */
+
+.factory-status.status-working {
+  background: #1e3a8a;
+  color: #93c5fd;
+}
+
+/* READY / CONNECTING */
+
+.factory-status.status-idle {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+/* FACTORY SERIAL PORT */
+
+.serial-port-label {
+  display: block;
+  color: #93c5fd;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.serial-port-details {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--text-secondary);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* Section Header */
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
+/* Screen Reader Only */
+
+.sr-only {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Footer */
+
+footer {
+  margin-top: 2rem;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ============================================================
+   7. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .container {
+    padding: 1.2rem;
+  }
+
+  .panel {
+    padding: 1rem;
+  }
+
+  .file-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+
+  .section-head {
+    align-items: stretch;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .panel {
+    padding: 0.85rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}

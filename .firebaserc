@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "web-flasher-esp32"
+  }
+}
